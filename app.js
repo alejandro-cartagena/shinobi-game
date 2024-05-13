@@ -41,7 +41,7 @@ function animateAttack() {
 
 
 const drawPlayer = (frameX, frameY) => {
-  player.style.backgroundPosition = `${frameX * -128}px ${frameY * 128}px`;
+  player.style.backgroundPosition = `${frameX * -192}px ${frameY * 192}px`;
 }
 //Move player forward
 function animatePlayer(imageArr) {
@@ -68,7 +68,7 @@ document.addEventListener('keydown', (e) => {
     //clearInterval(movInterval)
     player.style.backgroundImage = 'url("./SpriteSheets/Samurai/Run.png")'
     player.style.rotate = 'y 180deg'
-    player.style.backgroundPosition = '128px 128px';
+    player.style.backgroundPosition = '192px 192px';
     window.requestAnimationFrame(() => animatePlayer(animationLoop))
     //movInterval = setInterval(animatePlayer, 34);
     playerMove(-10)
@@ -78,7 +78,7 @@ document.addEventListener('keydown', (e) => {
 
     player.style.backgroundImage = 'url("./SpriteSheets/Samurai/Run.png")'
     player.style.rotate = 'y 0deg'
-    player.style.backgroundPosition = '128px 128px';
+    player.style.backgroundPosition = '192px 192px';
     window.requestAnimationFrame(() => animatePlayer(animationLoop))
     //movInterval = setInterval(animatePlayer, 34);
     playerMove(10)
@@ -90,11 +90,11 @@ document.addEventListener("keypress", (e) => {
   if (e.key === " " || e.key === "Spacebar") {
     clearInterval(intervalId)
     player.style.backgroundImage = 'url("./SpriteSheets/Samurai/Attack_1.png")'
-    player.style.backgroundPosition = '128px 128px';
+    player.style.backgroundPosition = '192px 192px';
     intervalId = setInterval(animateAttack, 60)
     setTimeout(() => {
       player.style.backgroundImage = 'url("./SpriteSheets/Samurai/Idle.png")'
-      player.style.backgroundPosition = '128px 128px';
+      player.style.backgroundPosition = '192px 192px';
     }, 360)
   }
 })
@@ -104,7 +104,7 @@ document.addEventListener('keyup', (e) => {
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
     clearInterval(intervalId)
     player.style.backgroundImage = 'url("./SpriteSheets/Samurai/Idle.png")'
-    player.style.backgroundPosition = '128px 128px';
+    player.style.backgroundPosition = '192px 192px';
   }
 })
 
