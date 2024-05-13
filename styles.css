@@ -54,6 +54,14 @@ body {
   }
   
   /* Game page */
+
+  #game-page-container {
+    /* border: solid red; */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   
   #game-page {
     display: none;
