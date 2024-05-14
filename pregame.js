@@ -2,7 +2,7 @@ const startBtn = document.getElementById("btn-start");
 const welcomePage = document.getElementById("welcome");
 const startPage = document.getElementById("main");
 const preGameScreen = document.getElementById("pregame-page");
-const gamePage = document.getElementById("game-page");
+const gamePage = document.getElementById("game-page-container");
 
 startBtn.addEventListener("click", () => {
   startPage.style.display = "none";
