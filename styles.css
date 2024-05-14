@@ -16,6 +16,7 @@ body {
   }
   
   #welcome_text {
+    text-shadow: 1px 1px 4px #000;
     color: white;
   }
   
@@ -31,10 +32,12 @@ body {
     color: white;
     background-color: red;
     text-align: center;
-    font-weight: 400;
+    font-weight: 500;
     cursor: pointer;
     border:none;
     transition: scale 0.2s;
+    letter-spacing: 1px;
+    
   }
 
   #btn-start:hover {
@@ -66,6 +69,7 @@ body {
   }
 
   #lore-content {
+    text-shadow: 1px 1px 2px #000;
     width: 300px;
     height: 440px;
     padding: 20px 40px;
@@ -80,6 +84,11 @@ body {
   }
   #lore-content h1{
     text-align: center;
+  }
+
+  #lore-text {
+    
+    letter-spacing: 0.5px;
   }
 
   #btn-skip {
