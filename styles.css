@@ -108,13 +108,12 @@ body {
   #game-page-container {
     /* border: solid red; */
     height: 100vh;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
   }
   
   #game-page {
-    display: none;
     width: 800px;
     height: 600px;
     background-image: url("/gameScreenBG.webp");
