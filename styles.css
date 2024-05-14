@@ -133,4 +133,28 @@ body {
     bottom: 40px;
     left: 0;
   }
+
+  #player-stats {
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #player-stats h2 {
+    color: white;
+    margin: 0;
+  }
+
+  .heart {
+    font-size: 2rem;
+  }
+
+  .fa-heart {
+    color: rgb(168, 26, 26);
+  }
+
+  .fa-heart-crack {
+    color: rgb(228, 149, 162);
+  }
   
