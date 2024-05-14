@@ -1,4 +1,6 @@
-const player = new Player()
+const gameScreen = document.getElementById("game-page")
+const player = new Player(gameScreen)
+let playerLives = 3
 
 
 document.addEventListener('keydown', (e) => {

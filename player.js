@@ -1,5 +1,6 @@
 class Player {
-    constructor() {
+    constructor(gameScreen) {
+        this.gameScreen = gameScreen
         this.playerPos = 0
         this.element = document.getElementById("player")
         
@@ -20,7 +21,12 @@ class Player {
     }
 
     playerMove = (distance) => {
-        this.playerPos += distance
+        console.log("(Left offset, Right offset)", this.gameScreen.offsetLeft, this.gameScreen.offsetWidth)
+        console.log("Player Position: ", this.playerPos )
+        if ((distance < 0 && this.playerPos > 0) || (distance > 0 && this.playerPos < 600)) {
+            this.playerPos += distance
+        }
+
         this.element.style.left = `${this.playerPos}px`;
     }
 
