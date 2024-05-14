@@ -76,12 +76,12 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') {
     //clearInterval(movInterval)
 
+    playerMove(10)
     player.style.backgroundImage = 'url("./SpriteSheets/Samurai/Run.png")'
     player.style.rotate = 'y 0deg'
     player.style.backgroundPosition = '192px 192px';
     window.requestAnimationFrame(() => animatePlayer(animationLoop))
     //movInterval = setInterval(animatePlayer, 34);
-    playerMove(10)
   }
 
 })

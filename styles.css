@@ -1,10 +1,11 @@
 body {
     margin: 0;
     padding: 0;
+    height: 98vh;
   }
   
   #main {
-    background-image: url("./assets/shinobi2.avif");
+    background-image: url("./assets/samuraigameBG.jpeg");
     background-size: cover;
     width: 100%;
     display: flex;
@@ -23,15 +24,22 @@ body {
       display: block;
   }
   
-  #btn-dmg {
+  #btn-start {
     width: 150px;
     height: 40px;
     border-radius: 5px;
     color: white;
-    border-color: red;
-    border-style: groove;
     background-color: red;
     text-align: center;
+    font-weight: 400;
+    cursor: pointer;
+    border:none;
+    transition: scale 0.2s;
+  }
+
+  #btn-start:hover {
+    border: solid 2px #F0F0F0;
+    scale: 1.1;
   }
   
   /* Pre-Game page */
@@ -40,8 +48,12 @@ body {
       display: none;
       height: 100vh;
       width: auto;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      background-image: url('./assets/pregameBG1.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
   }
   
   #pregame {
@@ -50,8 +62,46 @@ body {
     background-repeat: no-repeat;
     width: 300px;
     height: 300px;
-    border-radius: 100%;
+    border-radius: 100%;    
   }
+
+  #lore-content {
+    width: 300px;
+    height: 440px;
+    padding: 20px 40px;
+    background-color: rgba(47, 79, 79, 0.5);
+    color: white;
+    margin-top: 10px;
+    -webkit-box-shadow: 3px 3px 5px 0px rgba(15,14,15,1);
+    -moz-box-shadow: 3px 3px 5px 0px rgba(15,14,15,1);
+    box-shadow: 5px 5px 5px 0px rgba(15,14,15,1);
+    border-radius: 5px;
+    position: relative;
+  }
+  #lore-content h1{
+    text-align: center;
+  }
+
+  #btn-skip {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    border-radius: 50%;
+    padding: 5px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: all 0.3s;
+    -webkit-box-shadow: 3px 3px 5px 0px rgba(15,14,15,1);
+    -moz-box-shadow: 3px 3px 5px 0px rgba(15,14,15,1);
+    box-shadow: 5px 5px 5px 0px rgba(15,14,15,1);
+  }
+
+  
+
+
+
+ 
   
   /* Game page */
 
