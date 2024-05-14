@@ -1,12 +1,12 @@
 let player = document.getElementById('player');
 let intervalId
 
-
+let jumping = false
 let decreasing = true;
 player.style.opacity = 1
 let currentLoopIndex = 0;
 const animationLoop = [1, 2, 3, 4, 5, 6, 7, 8];
-const jumpLoop = [1, 2, 3, 4, 5, 6, 7, 8, 11, 12]
+const jumpLoop = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 const attackLoop = [1, 2, 3, 4, 5, 6]
 let movInterval
 let playerPos = 0
@@ -57,9 +57,47 @@ function animatePlayer(imageArr) {
 }
 
 //Jump Player
-// const jumpPlayer = () => {
+const jumpPlayer = () => {
+  if (!jumping) {
+    currentLoopIndex = 0
+    jumping = true
+    //play the jumping sound
+    let startJumping = 40
+    let endJumping = 200
+    let jumpSpeed = 20
+    let jumpInterval = setInterval(() => {
+      if (startJumping < endJumping) {
+        startJumping += jumpSpeed
+        player.style.bottom = `${startJumping}px`
+        animatePlayer(jumpLoop)
+        console.log(currentLoopIndex)
+      } else {
+        clearInterval(jumpInterval)
+        fallPlayer()
+      }
+    }, 40)
+  }
+}
 
-// }
+const fallPlayer = () => {
+  let startFalling = 200
+  let endFalling = 40
+  let fallSpeed = 40
+
+  let fallInterval = setInterval(() => {
+    if (startFalling > endFalling) {
+      startFalling -= fallSpeed
+      player.style.bottom = `${startFalling}px`
+      animatePlayer(jumpLoop)
+      console.log(currentLoopIndex)
+
+    } else {
+      clearInterval(fallInterval)
+      jumping = false
+      player.style.backgroundImage = 'url("./SpriteSheets/Samurai/Idle.png")'
+    }
+  }, 40)
+}
 
 let gameScreen = document.getElementById('game-page');
 
@@ -83,12 +121,19 @@ document.addEventListener('keydown', (e) => {
     window.requestAnimationFrame(() => animatePlayer(animationLoop))
     //movInterval = setInterval(animatePlayer, 34);
   }
+  if (e.key === 'ArrowUp'){
+    player.style.backgroundImage = 'url("./SpriteSheets/Samurai/Jump.png")'
+    player.style.backgroundPosition = '192px 192px';
+    //window.requestAnimationFrame(() => animatePlayer(jumpLoop))
+    jumpPlayer()
+  } 
 
 })
 
 document.addEventListener("keypress", (e) => {
   if (e.key === " " || e.key === "Spacebar") {
     clearInterval(intervalId)
+    currentLoopIndex = 0
     player.style.backgroundImage = 'url("./SpriteSheets/Samurai/Attack_1.png")'
     player.style.backgroundPosition = '192px 192px';
     intervalId = setInterval(animateAttack, 60)
