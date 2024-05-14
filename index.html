@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width" />
     <title>Shinobi Game</title>
     <link href="./styles.css" rel="stylesheet" type="text/css" />
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/ac4dc93457.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -26,8 +29,22 @@
 
     <!-- Game page -->
     <div id="game-page-container">
+      
+      
         <div id="game-page">
-            <div id="player"></div>
+          <div id="player-stats">
+            <div class="player-lives">
+              <i class="fa-solid fa-heart heart"></i>
+              <i class="fa-solid fa-heart heart"></i>
+              <i class="fa-solid fa-heart heart"></i>
+            </div>
+            <div class="player-score">
+              <h2>Score: <span>0</span></h2>
+            </div>
+            
+            <!-- <i class="fa-solid fa-heart-crack"></i> -->
+          </div>
+          <div id="player"></div>
         </div>
     </div>
     

@@ -2,6 +2,13 @@ const gameScreen = document.getElementById("game-page")
 const player = new Player(gameScreen)
 let playerLives = 3
 
+const playerHearts = document.querySelectorAll(".heart")
+let playerHeartsArr = [...playerHearts]
+
+// if (playerLives === 3) {
+//   playerHeartsArr[2].classList.remove("fa-heart")
+//   playerHeartsArr[2].classList.add("fa-heart-crack")
+// }
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') {
