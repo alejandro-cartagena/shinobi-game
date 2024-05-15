@@ -4,6 +4,10 @@ class Player {
     this.playerPos = 0;
     this.element = document.getElementById("player");
 
+    this.element.style.opacity = 1
+    this.element.style.left = '0'
+    this.element.style.bottom = '40px'
+
     this.playerLives = 3
 
     this.attacking = false;
@@ -137,36 +141,54 @@ class Player {
   };
 
   didCollide(enemy) {
-    const playerRect = this.element.getBoundingClientRect();
-    const enemyRect = enemy.element.getBoundingClientRect();
-    if (
-      playerRect.left + playerRect.width / 1.5 < enemyRect.right &&
-      playerRect.right - playerRect.width / 1.5 > enemyRect.left &&
-      playerRect.top < enemyRect.bottom &&
-      playerRect.bottom > enemyRect.top + enemyRect.height / 1.5
-    ) {
-      this.isColliding = true
-      console.log("collided")
-      return true;
-    } else {
-      return false;
+    if (!enemy.enemyIsDying) {
+      const playerRect = this.element.getBoundingClientRect();
+      const enemyRect = enemy.element.getBoundingClientRect();
+      if (
+        playerRect.left + playerRect.width / 1.5 < enemyRect.right &&
+        playerRect.right - playerRect.width / 1.5 > enemyRect.left &&
+        playerRect.top < enemyRect.bottom &&
+        playerRect.bottom > enemyRect.top + enemyRect.height / 1.5
+      ) {
+        this.isColliding = true
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
   pushback() {
+    
     let pushbackInterval = setInterval(() => {
-      this.playerMove(-5)
-
+      this.element.style.rotate === 'y 0deg' ? this.playerMove(-5) : this.playerMove(5)
+      this.takeDamage()
     }, 50)
     setTimeout(() => {
       if (this.isColliding) {
         this.playerLives -= 1
       }
-      console.log("Player lives: ", this.playerLives)
       clearInterval(pushbackInterval)
       this.isColliding = false
     }, 500)
     
+  }
+
+  takeDamage() {
+    let currentOpacity = parseFloat(this.element.style.opacity);
+    if (this.takingDamage) {
+      if (currentOpacity > 0.2) {
+        this.element.style.opacity = currentOpacity - 0.2;
+      } else {
+        this.takingDamage = false;
+      }
+    } else {
+      if (currentOpacity < 1) {
+        this.element.style.opacity = currentOpacity + 0.2;
+      } else {
+        this.takingDamage = true;
+      }
+    }
   }
 
   

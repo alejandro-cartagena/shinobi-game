@@ -147,16 +147,13 @@ body {
   }
 
   #player {
-    border: solid red;
+    /* border: solid red; */
     position: absolute;
     height: 192px;
     width: 192px;
     background-image: url("./SpriteSheets/Samurai/Idle.png");
     background-position: 192px 192px;
-    /* background-repeat: no-repeat; */
     background-size: cover;
-    bottom: 40px;
-    left: 0;
   }
 
   #player-stats {
@@ -185,8 +182,11 @@ body {
   
   #game-over {
     position: absolute;
-    top: 300px;
-    left: 295px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
     background-color: pink;
     /* text-align: center; */
     display: flex;
