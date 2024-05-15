@@ -1,10 +1,18 @@
+const gamePageContainer = document.getElementById('game-page-container')
 const gameScreen = document.getElementById("game-page")
-const player = new Player(gameScreen)
-let playerLives = 3
+const gameOverText = document.getElementById('');
+const scoreElement = document.getElementById('score')
+
+let player
+let enemy
+let score = 0
 
 
-const playerHearts = document.querySelectorAll(".heart")
-let playerHeartsArr = [...playerHearts]
+let gameLoopInterval;
+
+// Player Lives
+let playerHeartsArr = [...document.querySelectorAll(".heart")]
+
 // let movingLeft = false
 // let movingRight = false
 
@@ -30,6 +38,7 @@ document.addEventListener('keydown', (e) => {
   else if (e.key === " " || e.key === "Spacebar") {
     player.element.style.backgroundImage = 'url("./SpriteSheets/Samurai/Attack_1.png")'
     player.animateAttack()
+    killEnemy()
   }
   
 })
@@ -43,18 +52,119 @@ document.addEventListener('keyup', (e) => {
   }
 })
 
-//Update Interval for moving like a game loop
-setInterval(() => {
-  if(player.movingLeft) {
-    player.playerMove(-10);
-  } else if(player.movingRight) {
-    player.playerMove(10);
-  } else if(!player.attacking) {
-    player.animatePlayer('attack');
-  }
-}, 50)
 
-setTimeout(() => {
+function killEnemy() {
+  const playerRect = player.element.getBoundingClientRect();
+  const enemyRect = enemy.element.getBoundingClientRect();
+  if (player.element.style.rotate === 'y 0deg') {
+    if ((playerRect.right - playerRect.width / 2 > enemyRect.left) && (enemyRect.left > playerRect.left)) {
+      enemy.element.style.backgroundImage = enemy.dyingUrl
+      enemy.enemyIsDying = true
+      setTimeout(() => {
+        gameScreen.removeChild(enemy.element)
+        score += 1
+        scoreElement.innerText = score
+        enemy = new Onre(gameScreen)
+      }, 1000)
+    }
+  }
+  else if (player.element.style.rotate === 'y 180deg') {
+    if ((playerRect.left + playerRect.width / 2 < enemyRect.right) && (enemyRect.right < playerRect.right)) {
+      enemy.element.style.backgroundImage = enemy.dyingUrl
+      enemy.enemyIsDying = true
+      setTimeout(() => {
+        gameScreen.removeChild(enemy.element)
+        score += 1
+        scoreElement.innerText = score
+        enemy = new Onre(gameScreen)
+      }, 1000)
+    }
+  }
+
   
-}, 3000)
+}
+
+
+function startGame() {
+  player = new Player(gameScreen)
+  enemy = new Yurei(gameScreen)
+  score = 0
+  scoreElement.innerText = score
+  playerHeartsArr.forEach(heart => {
+    heart.className = "fa-solid fa-heart heart"
+  })
+
+  gameLoopInterval = setInterval(() => {
+    if(player.movingLeft) {
+      if(player.jumping || player.falling) {
+        player.playerMove(-20)
+      }
+      else {
+        player.playerMove(-10);
+      }
+    } else if(player.movingRight) {
+      if(player.jumping || player.falling) {
+        player.playerMove(20)
+      }
+      else {
+        player.playerMove(10);
+      }
+    } else if(!player.attacking) {
+      player.animatePlayer('attack');
+    }
+    if (player.didCollide(enemy)) {
+      if (player.playerLives > 0) {
+        player.pushback()
+        playerHeartsArr[player.playerLives - 1].classList.remove("fa-heart")
+        playerHeartsArr[player.playerLives - 1].classList.add("fa-heart-crack")
+      }
+    }
+    gameOver();
+    
+    
+
+    // let enemyDistances = [5, -5]
+    // let randomIndex = Math.floor(Math.random() * enemyDistances.length)
+    // let randomDistance = enemyDistances[randomIndex]
+    // console.log(randomDistance)
+    enemy.enemyMove()
+  }, 50)
+
+  
+  setTimeout(() => {
+    
+  }, 3000)
+}
+
+//Update Interval for moving like a game loop
+function gameOver() {
+  if(player.playerLives == 0) {
+    clearInterval(gameLoopInterval);
+
+    let gameOverScreen = document.createElement('div')
+    gameOverScreen.innerHTML = `
+    <div id="game-over">
+      <h1 id="">GAME OVER</h1>
+      <h3 id="score">Score: ${score}</h3>
+      <button id="reset-btn">RESET</button>
+    </div>
+  `
+    // gameScreen.style.display = 'none'
+    gamePage.appendChild(gameOverScreen)
+
+    const resetBtn = document.getElementById('reset-btn'); 
+    
+    resetBtn.addEventListener('click', () => {
+      gameScreen.removeChild(enemy.element)
+      startGame();
+      player.playerLives = 3
+      gamePage.removeChild(gameOverScreen)
+      gameScreen.style.display = 'block'
+      
+    })
+  }
+}
+
+
+
 

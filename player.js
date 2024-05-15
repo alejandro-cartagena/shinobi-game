@@ -4,12 +4,20 @@ class Player {
     this.playerPos = 0;
     this.element = document.getElementById("player");
 
+    this.element.style.opacity = 1
+    this.element.style.left = '0'
+    this.element.style.bottom = '40px'
+
+    this.playerLives = 3
+
     this.attacking = false;
     this.jumping = false;
     this.falling = false;
     this.takingDamage = true;
     this.movingLeft = false
     this.movingRight = false
+
+    this.isColliding = false
 
     // For Sprite Sheets Control
     this.motionLoopIndex = 0;
@@ -98,8 +106,8 @@ class Player {
       this.jumping = true;
       //play the jumping sound
       let startJumping = 40;
-      let endJumping = 200;
-      let jumpSpeed = 20;
+      let endJumping = 280;
+      let jumpSpeed = 30;
       let jumpInterval = setInterval(() => {
         if (startJumping < endJumping) {
           startJumping += jumpSpeed;
@@ -114,9 +122,9 @@ class Player {
   };
 
   fallPlayer = () => {
-    let startFalling = 200;
+    let startFalling = 280;
     let endFalling = 40;
-    let fallSpeed = 40;
+    let fallSpeed = 60;
 
     let fallInterval = setInterval(() => {
       if (startFalling > endFalling) {
@@ -131,4 +139,58 @@ class Player {
       }
     }, 40);
   };
+
+  didCollide(enemy) {
+    if (!enemy.enemyIsDying) {
+      const playerRect = this.element.getBoundingClientRect();
+      const enemyRect = enemy.element.getBoundingClientRect();
+      if (
+        playerRect.left + playerRect.width / 1.5 < enemyRect.right &&
+        playerRect.right - playerRect.width / 1.5 > enemyRect.left &&
+        playerRect.top < enemyRect.bottom &&
+        playerRect.bottom > enemyRect.top + enemyRect.height / 1.5
+      ) {
+        this.isColliding = true
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  pushback() {
+    
+    let pushbackInterval = setInterval(() => {
+      this.element.style.rotate === 'y 0deg' ? this.playerMove(-5) : this.playerMove(5)
+      this.takeDamage()
+    }, 50)
+    setTimeout(() => {
+      if (this.isColliding) {
+        this.playerLives -= 1
+      }
+      clearInterval(pushbackInterval)
+      this.isColliding = false
+    }, 500)
+    
+  }
+
+  takeDamage() {
+    let currentOpacity = parseFloat(this.element.style.opacity);
+    if (this.takingDamage) {
+      if (currentOpacity > 0.2) {
+        this.element.style.opacity = currentOpacity - 0.2;
+      } else {
+        this.takingDamage = false;
+      }
+    } else {
+      if (currentOpacity < 1) {
+        this.element.style.opacity = currentOpacity + 0.2;
+      } else {
+        this.takingDamage = true;
+      }
+    }
+  }
+
+  
+
 }
