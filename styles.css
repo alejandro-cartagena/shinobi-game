@@ -74,8 +74,10 @@ body {
     height: 440px;
     padding: 20px 40px;
     background-color: rgba(47, 79, 79, 0.5);
-    color: white;
     margin-top: 10px;
+    color: #1d0303;
+    font-style: italic;
+    font-weight: 600;
     -webkit-box-shadow: 3px 3px 5px 0px rgba(15,14,15,1);
     -moz-box-shadow: 3px 3px 5px 0px rgba(15,14,15,1);
     box-shadow: 5px 5px 5px 0px rgba(15,14,15,1);
@@ -84,15 +86,28 @@ body {
   }
   #lore-content h1{
     text-align: center;
+    position: relative;
+  }
+  #bg-lore {
+    position: absolute;
+    object-fit: cover;
+    opacity: 0.6;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-position: top center;
+    border-radius: 5px;
   }
 
   #lore-text {
-    
+    position: relative;
     letter-spacing: 0.5px;
   }
 
   #btn-skip {
     position: absolute;
+    font-weight: 600;
     right: 10px;
     bottom: 10px;
     border-radius: 50%;
