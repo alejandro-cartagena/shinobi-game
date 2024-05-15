@@ -24,6 +24,7 @@ startBtn.addEventListener("click", () => {
       setTimeout(() => {
         preGameScreen.style.display = "none";
         gamePage.style.display = "flex";
+        startGame()
       }, 2000)
     } else {
       letterByLetter.innerHTML += loretext[i]
@@ -35,6 +36,7 @@ startBtn.addEventListener("click", () => {
     letterByLetter.innerText = loretext
     preGameScreen.style.display = "none";
     gamePage.style.display = "flex";
+    startGame()
   })
 });
 

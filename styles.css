@@ -147,6 +147,7 @@ body {
   }
 
   #player {
+    border: solid red;
     position: absolute;
     height: 192px;
     width: 192px;
@@ -182,3 +183,17 @@ body {
     color: rgb(228, 149, 162);
   }
   
+  #game-over {
+    position: absolute;
+    top: 300px;
+    left: 295px;
+    background-color: pink;
+    /* text-align: center; */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 500px;
+    height: 300px;
+    box-shadow: grey;
+  }

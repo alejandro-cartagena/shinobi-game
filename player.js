@@ -4,12 +4,16 @@ class Player {
     this.playerPos = 0;
     this.element = document.getElementById("player");
 
+    this.playerLives = 3
+
     this.attacking = false;
     this.jumping = false;
     this.falling = false;
     this.takingDamage = true;
     this.movingLeft = false
     this.movingRight = false
+
+    this.isColliding = false
 
     // For Sprite Sheets Control
     this.motionLoopIndex = 0;
@@ -98,8 +102,8 @@ class Player {
       this.jumping = true;
       //play the jumping sound
       let startJumping = 40;
-      let endJumping = 200;
-      let jumpSpeed = 20;
+      let endJumping = 280;
+      let jumpSpeed = 30;
       let jumpInterval = setInterval(() => {
         if (startJumping < endJumping) {
           startJumping += jumpSpeed;
@@ -114,9 +118,9 @@ class Player {
   };
 
   fallPlayer = () => {
-    let startFalling = 200;
+    let startFalling = 280;
     let endFalling = 40;
-    let fallSpeed = 40;
+    let fallSpeed = 60;
 
     let fallInterval = setInterval(() => {
       if (startFalling > endFalling) {
@@ -131,4 +135,40 @@ class Player {
       }
     }, 40);
   };
+
+  didCollide(enemy) {
+    const playerRect = this.element.getBoundingClientRect();
+    const enemyRect = enemy.element.getBoundingClientRect();
+    if (
+      playerRect.left + playerRect.width / 1.5 < enemyRect.right &&
+      playerRect.right - playerRect.width / 1.5 > enemyRect.left &&
+      playerRect.top < enemyRect.bottom &&
+      playerRect.bottom > enemyRect.top + enemyRect.height / 1.5
+    ) {
+      this.isColliding = true
+      console.log("collided")
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  pushback() {
+    let pushbackInterval = setInterval(() => {
+      this.playerMove(-5)
+
+    }, 50)
+    setTimeout(() => {
+      if (this.isColliding) {
+        this.playerLives -= 1
+      }
+      console.log("Player lives: ", this.playerLives)
+      clearInterval(pushbackInterval)
+      this.isColliding = false
+    }, 500)
+    
+  }
+
+  
+
 }
