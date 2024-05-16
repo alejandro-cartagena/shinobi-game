@@ -3,6 +3,8 @@ const gameScreen = document.getElementById("game-page")
 const gameOverText = document.getElementById('');
 const scoreElement = document.getElementById('score')
 
+const bossTextElement = document.createElement("h1")
+
 // Sounds
 
 const gameAudio = document.createElement("audio")
@@ -27,6 +29,10 @@ const victoryAudio = document.createElement("audio")
 victoryAudio.src = "./Sounds/victory.mp3"
 victoryAudio.loop = true
 victoryAudio.volume = 0.2
+
+const bossAppearsAudio = document.createElement("audio")
+bossAppearsAudio.src = "./Sounds/boss-appears.mp3"
+bossAppearsAudio.volume = 0.4
 
 
 
@@ -78,6 +84,16 @@ document.addEventListener('keyup', (e) => {
 })
 
 
+function spawnBoss() {
+  
+  bossTextElement.classList.add("boss-text")
+  bossTextElement.innerText = "BOSS FIGHT!"
+  gameScreen.appendChild(bossTextElement)
+
+  bossAppearsAudio.play()
+}
+
+
 function killEnemy() {
   const playerRect = player.element.getBoundingClientRect();
   const enemyRect = enemy.element.getBoundingClientRect();
@@ -116,8 +132,21 @@ function killEnemy() {
             score++
           }
           scoreElement.innerText = score
-          enemy = enemies.splice(0, 1)[0]
-          gameScreen.appendChild(enemy.element)
+      
+          if (enemies.length === 1) {
+            spawnBoss()
+            setTimeout(() => {
+              enemy = enemies.splice(0, 1)[0]
+              gameScreen.removeChild(bossTextElement)
+              gameScreen.appendChild(enemy.element)
+            }, 2000)
+            
+          }
+          else {
+            enemy = enemies.splice(0, 1)[0]
+            gameScreen.appendChild(enemy.element)
+          }
+          
         }, 1000)
       }
       
@@ -157,9 +186,20 @@ function killEnemy() {
             score++
           }
           scoreElement.innerText = score
-          enemy = enemies.splice(0, 1)[0]
-          // enemies.length === 0 ? 
-          gameScreen.appendChild(enemy.element)
+          
+          if (enemies.length === 1) {
+            spawnBoss()
+            setTimeout(() => {
+              enemy = enemies.splice(0, 1)[0]
+              gameScreen.removeChild(bossTextElement)
+              gameScreen.appendChild(enemy.element)
+            }, 2000)
+          }
+          else {
+            enemy = enemies.splice(0, 1)[0]
+            gameScreen.appendChild(enemy.element)
+          }
+          
         }, 1000)
       }
     }
@@ -275,7 +315,7 @@ function gameOver() {
     </div>
   `
     // gameScreen.style.display = 'none'
-    gamePage.appendChild(gameOverScreen)
+    gameScreen.appendChild(gameOverScreen)
 
     const resetBtn = document.getElementById('reset-btn'); 
     
@@ -283,7 +323,7 @@ function gameOver() {
       gameScreen.removeChild(enemy.element)
       startGame();
       player.playerLives = 3
-      gamePage.removeChild(gameOverScreen)
+      gameScreen.removeChild(gameOverScreen)
       gameScreen.style.display = 'block'
       
     })
