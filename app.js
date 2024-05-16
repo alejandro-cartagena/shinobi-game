@@ -3,6 +3,8 @@ const gameScreen = document.getElementById("game-page")
 const gameOverText = document.getElementById('');
 const scoreElement = document.getElementById('score')
 
+const bossTextElement = document.createElement("h1")
+
 // Sounds
 
 const gameAudio = document.createElement("audio")
@@ -22,6 +24,15 @@ loseAudio.volume = 0.2
 
 const killEnemyAudio = document.createElement("audio")
 killEnemyAudio.src = "./Sounds/enemy-death.mp3"
+
+const victoryAudio = document.createElement("audio")
+victoryAudio.src = "./Sounds/victory.mp3"
+victoryAudio.loop = true
+victoryAudio.volume = 0.2
+
+const bossAppearsAudio = document.createElement("audio")
+bossAppearsAudio.src = "./Sounds/boss-appears.mp3"
+bossAppearsAudio.volume = 0.4
 
 
 
@@ -73,6 +84,16 @@ document.addEventListener('keyup', (e) => {
 })
 
 
+function spawnBoss() {
+  
+  bossTextElement.classList.add("boss-text")
+  bossTextElement.innerText = "BOSS FIGHT!"
+  gameScreen.appendChild(bossTextElement)
+
+  bossAppearsAudio.play()
+}
+
+
 function killEnemy() {
   const playerRect = player.element.getBoundingClientRect();
   const enemyRect = enemy.element.getBoundingClientRect();
@@ -111,8 +132,21 @@ function killEnemy() {
             score++
           }
           scoreElement.innerText = score
-          enemy = enemies.splice(0, 1)[0]
-          gameScreen.appendChild(enemy.element)
+      
+          if (enemies.length === 1) {
+            spawnBoss()
+            setTimeout(() => {
+              enemy = enemies.splice(0, 1)[0]
+              gameScreen.removeChild(bossTextElement)
+              gameScreen.appendChild(enemy.element)
+            }, 2000)
+            
+          }
+          else {
+            enemy = enemies.splice(0, 1)[0]
+            gameScreen.appendChild(enemy.element)
+          }
+          
         }, 1000)
       }
       
@@ -152,9 +186,20 @@ function killEnemy() {
             score++
           }
           scoreElement.innerText = score
-          enemy = enemies.splice(0, 1)[0]
-          // enemies.length === 0 ? 
-          gameScreen.appendChild(enemy.element)
+          
+          if (enemies.length === 1) {
+            spawnBoss()
+            setTimeout(() => {
+              enemy = enemies.splice(0, 1)[0]
+              gameScreen.removeChild(bossTextElement)
+              gameScreen.appendChild(enemy.element)
+            }, 2000)
+          }
+          else {
+            enemy = enemies.splice(0, 1)[0]
+            gameScreen.appendChild(enemy.element)
+          }
+          
         }, 1000)
       }
     }
@@ -178,12 +223,17 @@ function pickRandomEnemy(enemyArr) {
 
 
 function startGame() {
+  // Resets All the Sounds
   bossAudio.pause()
   bossAudio.currentTime = 0
   gameAudio.currentTime = 0
   loseAudio.pause()
   loseAudio.currentTime = 0
+  victoryAudio.pause()
+  victoryAudio.currentTime = 0
+
   gameAudio.play()
+  
   // Creates 10 random enemies
   for (let i = 0; i < 3; i++) {
     enemies.push(pickRandomEnemy(enemyArray))
@@ -265,7 +315,7 @@ function gameOver() {
     </div>
   `
     // gameScreen.style.display = 'none'
-    gamePage.appendChild(gameOverScreen)
+    gameScreen.appendChild(gameOverScreen)
 
     const resetBtn = document.getElementById('reset-btn'); 
     
@@ -273,7 +323,7 @@ function gameOver() {
       gameScreen.removeChild(enemy.element)
       startGame();
       player.playerLives = 3
-      gamePage.removeChild(gameOverScreen)
+      gameScreen.removeChild(gameOverScreen)
       gameScreen.style.display = 'block'
       
     })
@@ -282,11 +332,14 @@ function gameOver() {
 
 function winGame() {
   clearInterval(gameLoopInterval);
+  gameAudio.pause()
+  bossAudio.pause()
+  victoryAudio.play()
 
   let winGameScreen = document.createElement("div")
   winGameScreen.innerHTML = `
     <div id="game-won">
-      <h1 id="">YOU ARE A TRUE SHINOBI</h1>
+      <h1 id="">YOU ARE A TRUE SAMURAI</h1>
       <h2 id="score">Score: ${score}</h2>
       <button id="reset-btn">TRY AGAIN</button>
     </div>

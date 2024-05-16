@@ -28,10 +28,8 @@ class Enemy {
         this.element.style.backgroundSize = 'cover';
         this.element.style.bottom = '40px';
         this.element.style.left = '600px';
-        // this.element.style.border = 'solid red';
         this.element.style.transform = 'rotateY(180deg)';
 
-        // gameScreen.appendChild(this.element)
     }
 
     enemyMove = () => {
