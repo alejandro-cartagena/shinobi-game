@@ -106,8 +106,8 @@ class Player {
       this.jumping = true;
       //play the jumping sound
       let startJumping = 40;
-      let endJumping = 280;
-      let jumpSpeed = 30;
+      let endJumping = 240;
+      let jumpSpeed = 25;
       let jumpInterval = setInterval(() => {
         if (startJumping < endJumping) {
           startJumping += jumpSpeed;
@@ -122,9 +122,9 @@ class Player {
   };
 
   fallPlayer = () => {
-    let startFalling = 280;
+    let startFalling = 240;
     let endFalling = 40;
-    let fallSpeed = 60;
+    let fallSpeed = 50;
 
     let fallInterval = setInterval(() => {
       if (startFalling > endFalling) {
@@ -159,6 +159,7 @@ class Player {
   }
 
   pushback() {
+    
     let pushbackInterval = setInterval(() => {
       this.element.style.rotate === 'y 0deg' ? this.playerMove(-5) : this.playerMove(5)
       this.takeDamage()
