@@ -244,7 +244,7 @@ body {
 
   /* GAME WON SCREEN */
   #game-won {
-    background-image: url("./assets/game-screenBG1.jpg");
+    background-image: url("https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWw4NG8zcDd0Z3R1eDY2eGgzbTV3MnRvNjNmODJvaGtjZXp5aG44ZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jzHFPlw89eTqU/giphy.gif");
     color: #FFF;
     text-shadow: 1px 1px 4px #000;
   }

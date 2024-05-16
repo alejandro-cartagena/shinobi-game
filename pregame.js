@@ -7,7 +7,7 @@ const gamePage = document.getElementById("game-page-container");
 // Audio
 const preGameAudio = document.createElement("audio")
 preGameAudio.src = "./Sounds/sakuya-pre-game.mp3"
-preGameAudio.volume = 0.4
+preGameAudio.volume = 0.2
 
 startBtn.addEventListener("click", () => {
   startPage.style.display = "none";
