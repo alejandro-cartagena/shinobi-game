@@ -159,7 +159,6 @@ class Player {
   }
 
   pushback() {
-    
     let pushbackInterval = setInterval(() => {
       this.element.style.rotate === 'y 0deg' ? this.playerMove(-5) : this.playerMove(5)
       this.takeDamage()
