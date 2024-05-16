@@ -10,6 +10,17 @@ class Player {
 
     this.playerLives = 3
 
+    this.slashAudio = document.createElement("audio")
+    this.slashAudio.src = "./Sounds/slash.mp3"
+    this.jumpAudio = document.createElement("audio")
+    this.jumpAudio.src = "./Sounds/jumping.mp3"
+    this.landAudio = document.createElement("audio")
+    this.landAudio.src = "./Sounds/landing.mp3"
+    this.landAudio.currentTime = 0.05
+
+    this.takeDamageAudio = document.createElement("audio")
+    this.takeDamageAudio.src = "./Sounds/enemy-attack.mp3"
+
     this.attacking = false;
     this.jumping = false;
     this.falling = false;
@@ -88,6 +99,7 @@ class Player {
       this.attackLoopIndex = 0;
       let attackInterval = setInterval(() => {
         this.animatePlayer("attack");
+        this.slashAudio.play()
       }, 50);
       setTimeout(() => {
         clearInterval(attackInterval);
@@ -102,6 +114,7 @@ class Player {
 
   jumpPlayer = () => {
     if (!this.jumping) {
+      this.jumpAudio.play()
       this.jumpLoopIndex = 0;
       this.jumping = true;
       //play the jumping sound
@@ -134,8 +147,15 @@ class Player {
       } else {
         clearInterval(fallInterval);
         this.jumping = false;
-        this.element.style.backgroundImage =
-          'url("./SpriteSheets/Samurai/Idle.png")';
+        this.landAudio.currentTime = 0.05
+        this.landAudio.play()
+        if (this.movingLeft || this.movingRight) {
+          this.element.style.backgroundImage = 'url("./SpriteSheets/Samurai/Run.png")';
+        }
+        else {
+          this.element.style.backgroundImage = 'url("./SpriteSheets/Samurai/Idle.png")';
+        }
+        
       }
     }, 40);
   };
@@ -159,7 +179,7 @@ class Player {
   }
 
   pushback() {
-    
+    this.takeDamageAudio.play()
     let pushbackInterval = setInterval(() => {
       this.element.style.rotate === 'y 0deg' ? this.playerMove(-5) : this.playerMove(5)
       this.takeDamage()

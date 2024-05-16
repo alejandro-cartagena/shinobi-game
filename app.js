@@ -3,6 +3,28 @@ const gameScreen = document.getElementById("game-page")
 const gameOverText = document.getElementById('');
 const scoreElement = document.getElementById('score')
 
+// Sounds
+
+const gameAudio = document.createElement("audio")
+gameAudio.src = "./Sounds/misora-game.mp3"
+gameAudio.loop = true
+gameAudio.volume = 0.2
+
+const bossAudio = document.createElement("audio")
+bossAudio.src = "./Sounds/boss-music.mp3"
+bossAudio.loop = true
+bossAudio.volume = 0.3
+
+const loseAudio = document.createElement("audio")
+loseAudio.src = "./Sounds/death-of-shinobi.mp3"
+loseAudio.loop = true
+loseAudio.volume = 0.2
+
+const killEnemyAudio = document.createElement("audio")
+killEnemyAudio.src = "./Sounds/enemy-death.mp3"
+
+
+
 let player
 let enemy
 let enemyArray =  ["Yurei", "Gotoku", "Onre"]
@@ -73,6 +95,7 @@ function killEnemy() {
         else {
           // This is the die condition for the Boss
           // Also the WIN condition
+          enemy.enemyIsDying = true
           enemy.element.style.backgroundImage = enemy.dyingUrl
           setTimeout(() => {
             gameScreen.removeChild(enemy.element)
@@ -81,9 +104,10 @@ function killEnemy() {
         }
       }
       else {
+        killEnemyAudio.play()
         setTimeout(() => {
           gameScreen.removeChild(enemy.element)
-          if(!enemy.isDying) {
+          if(enemy.enemyIsDying) {
             score++
           }
           scoreElement.innerText = score
@@ -112,6 +136,7 @@ function killEnemy() {
         else {
           // This is the die condition for the Boss
           // Also the WIN condition
+          enemy.enemyIsDying = true
           enemy.element.style.backgroundImage = enemy.dyingUrl
           setTimeout(() => {
             gameScreen.removeChild(enemy.element)
@@ -120,9 +145,10 @@ function killEnemy() {
         }
       }
       else {
+        killEnemyAudio.play()
         setTimeout(() => {
           gameScreen.removeChild(enemy.element)
-          if(!enemy.isDying) {
+          if(!enemy.enemyIsDying) {
             score++
           }
           scoreElement.innerText = score
@@ -152,6 +178,12 @@ function pickRandomEnemy(enemyArr) {
 
 
 function startGame() {
+  bossAudio.pause()
+  bossAudio.currentTime = 0
+  gameAudio.currentTime = 0
+  loseAudio.pause()
+  loseAudio.currentTime = 0
+  gameAudio.play()
   // Creates 10 random enemies
   for (let i = 0; i < 3; i++) {
     enemies.push(pickRandomEnemy(enemyArray))
@@ -173,6 +205,12 @@ function startGame() {
   })
 
   gameLoopInterval = setInterval(() => {
+    // Che
+    if (enemy instanceof Boss) {
+      gameAudio.pause()
+      bossAudio.play()
+    }
+
     if(player.movingLeft) {
       if(player.jumping || player.falling) {
         player.playerMove(-20)
@@ -212,6 +250,10 @@ function startGame() {
 //Update Interval for moving like a game loop
 function gameOver() {
   if(player.playerLives == 0) {
+    loseAudio.play()
+    gameAudio.pause()
+    bossAudio.pause()
+
     clearInterval(gameLoopInterval);
 
     let gameOverScreen = document.createElement('div')
