@@ -145,8 +145,8 @@ function gameOver() {
     gameOverScreen.innerHTML = `
     <div id="game-over">
       <h1 id="">GAME OVER</h1>
-      <h3 id="score">Score: ${score}</h3>
-      <button id="reset-btn">RESET</button>
+      <h2 id="score">Score: ${score}</h2>
+      <button id="reset-btn">TRY AGAIN</button>
     </div>
   `
     // gameScreen.style.display = 'none'
