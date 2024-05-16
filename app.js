@@ -6,6 +6,7 @@ const scoreElement = document.getElementById('score')
 let player
 let enemy
 let enemyArray =  ["Yurei", "Gotoku", "Onre"]
+let enemies = []
 let score = 0
 
 let gameLoopInterval;
@@ -53,32 +54,83 @@ document.addEventListener('keyup', (e) => {
 function killEnemy() {
   const playerRect = player.element.getBoundingClientRect();
   const enemyRect = enemy.element.getBoundingClientRect();
+  
   if (player.element.style.rotate === 'y 0deg') {
     if ((playerRect.right - playerRect.width / 2 > enemyRect.left) && (enemyRect.left > playerRect.left)) {
       enemy.element.style.backgroundImage = enemy.dyingUrl
       enemy.enemyIsDying = true
-      setTimeout(() => {
-        gameScreen.removeChild(enemy.element)
-        if(!enemy.isDying) {
-          score++
+      // Checks if the enemy is the Boss
+      if(enemy instanceof Boss) {
+        // This is the Hurt condition for the Boss
+        if (enemy.bossLives > 0) {
+          enemy.element.style.backgroundImage = enemy.hurtUrl
+          setTimeout(() => {
+            enemy.enemyIsDying = false
+            enemy.element.style.backgroundImage = `url("./SpriteSheets/Kitsune/Run.png")`
+          }, 1000)
+          enemy.bossLives--
         }
-        scoreElement.innerText = score
-        enemy = pickRandomEnemy(enemyArray)
-      }, 1000)
+        else {
+          // This is the die condition for the Boss
+          // Also the WIN condition
+          enemy.element.style.backgroundImage = enemy.dyingUrl
+          setTimeout(() => {
+            gameScreen.removeChild(enemy.element)
+            winGame()
+          }, 1000)
+        }
+      }
+      else {
+        setTimeout(() => {
+          gameScreen.removeChild(enemy.element)
+          if(!enemy.isDying) {
+            score++
+          }
+          scoreElement.innerText = score
+          enemy = enemies.splice(0, 1)[0]
+          gameScreen.appendChild(enemy.element)
+        }, 1000)
+      }
+      
     }
   }
   else if (player.element.style.rotate === 'y 180deg') {
     if ((playerRect.left + playerRect.width / 2 < enemyRect.right) && (enemyRect.right < playerRect.right)) {
       enemy.element.style.backgroundImage = enemy.dyingUrl
       enemy.enemyIsDying = true
-      setTimeout(() => {
-        gameScreen.removeChild(enemy.element)
-        if(!enemy.isDying) {
-          score++
+      // Checks if the enemy is the Boss
+      if(enemy instanceof Boss) {
+        // This is the Hurt condition for the Boss
+        if (enemy.bossLives > 0) {
+          enemy.element.style.backgroundImage = enemy.hurtUrl
+          setTimeout(() => {
+            enemy.enemyIsDying = false
+            enemy.element.style.backgroundImage = `url("./SpriteSheets/Kitsune/Run.png")`
+          }, 1000)
+          enemy.bossLives--
         }
-        scoreElement.innerText = score
-        enemy = pickRandomEnemy(enemyArray)
-      }, 1000)
+        else {
+          // This is the die condition for the Boss
+          // Also the WIN condition
+          enemy.element.style.backgroundImage = enemy.dyingUrl
+          setTimeout(() => {
+            gameScreen.removeChild(enemy.element)
+            winGame()
+          }, 1000)
+        }
+      }
+      else {
+        setTimeout(() => {
+          gameScreen.removeChild(enemy.element)
+          if(!enemy.isDying) {
+            score++
+          }
+          scoreElement.innerText = score
+          enemy = enemies.splice(0, 1)[0]
+          // enemies.length === 0 ? 
+          gameScreen.appendChild(enemy.element)
+        }, 1000)
+      }
     }
   }
   
@@ -100,8 +152,20 @@ function pickRandomEnemy(enemyArr) {
 
 
 function startGame() {
+  // Creates 10 random enemies
+  for (let i = 0; i < 3; i++) {
+    enemies.push(pickRandomEnemy(enemyArray))
+  }
+  enemies.push(new Boss(gameScreen))
+
+
+  // Add the boss
+
+  // Appends Player and Enemy to Screen
   player = new Player(gameScreen)
-  enemy = pickRandomEnemy(enemyArray)
+  enemy = enemies.splice(0, 1)[0]
+  gameScreen.appendChild(enemy.element)
+
   score = 0
   scoreElement.innerText = score
   playerHeartsArr.forEach(heart => {
@@ -172,6 +236,30 @@ function gameOver() {
       
     })
   }
+}
+
+function winGame() {
+  clearInterval(gameLoopInterval);
+
+  let winGameScreen = document.createElement("div")
+  winGameScreen.innerHTML = `
+    <div id="game-won">
+      <h1 id="">YOU ARE A TRUE SHINOBI</h1>
+      <h2 id="score">Score: ${score}</h2>
+      <button id="reset-btn">TRY AGAIN</button>
+    </div>
+  `
+
+  gamePage.appendChild(winGameScreen)
+
+    const resetBtn = document.getElementById('reset-btn'); 
+    
+    resetBtn.addEventListener('click', () => {
+      startGame();
+      player.playerLives = 3
+      gamePage.removeChild(winGameScreen)
+      gameScreen.style.display = 'block'
+    })
 }
 
 

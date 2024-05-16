@@ -147,6 +147,10 @@ body {
     background-repeat: no-repeat;
     background-size: contain;
     position: relative;
+    border-radius: 8px;
+    -webkit-box-shadow: 3px 3px 5px 0px rgba(15,14,15,1);
+    -moz-box-shadow: 3px 3px 5px 0px rgba(15,14,15,1);
+    box-shadow: 5px 5px 5px 0px rgba(15,14,15,1);
   }
 
   #player {
@@ -183,7 +187,7 @@ body {
     color: rgb(228, 149, 162);
   }
   
-  #game-over {
+  #game-over, #game-won {
     width: 500px;
     height: 300px;
     color: #1948bf;
@@ -220,7 +224,7 @@ body {
     font-size: 1.75rem;
   }
 
-  #game-over button {
+  #reset-btn {
     margin-top: 2em;
     font-size: 1rem;
     padding: 0.5em 1em;
@@ -234,7 +238,14 @@ body {
     letter-spacing: 0.5px;
   }
 
-  #game-over button:hover {
+  #reset-btn:hover {
     transform: scale(1.1);
     border: 1px solid white;
+  }
+
+  /* GAME WON SCREEN */
+  #game-won {
+    background-image: url("./assets/game-screenBG1.jpg");
+    color: #FFF;
+    text-shadow: 1px 1px 4px #000;
   }
