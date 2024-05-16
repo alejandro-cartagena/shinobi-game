@@ -35,18 +35,21 @@ class Enemy {
     }
 
     enemyMove = () => {
-        if (this.element.style.left === '0px') {
-            this.movingLeft = false
-            this.element.style.rotate = `y 180deg`
+        if (!this.enemyIsDying) {
+            if (this.element.style.left === '0px') {
+                this.movingLeft = false
+                this.element.style.rotate = `y 180deg`
+            }
+            else if (this.element.style.left === '600px') {
+                this.movingLeft = true
+                this.element.style.rotate = `y 0deg`
+            }
+            this.movingLeft ? this.enemyPos -= 5 : this.enemyPos += 5;
+            
         }
-        else if (this.element.style.left === '600px') {
-            this.movingLeft = true
-            this.element.style.rotate = `y 0deg`
-        }
-        this.movingLeft ? this.enemyPos -= 5 : this.enemyPos += 5;
         this.animateEnemy();
-    
         this.element.style.left = `${this.enemyPos}px`;
+
       };
     
       drawEnemy = (frameX, frameY) => {
