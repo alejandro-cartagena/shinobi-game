@@ -5,21 +5,15 @@ const scoreElement = document.getElementById('score')
 
 let player
 let enemy
+let enemyArray =  ["Yurei", "Gotoku", "Onre"]
 let score = 0
-
 
 let gameLoopInterval;
 
 // Player Lives
 let playerHeartsArr = [...document.querySelectorAll(".heart")]
 
-// let movingLeft = false
-// let movingRight = false
 
-// if (playerLives === 3) {
-//   playerHeartsArr[2].classList.remove("fa-heart")
-//   playerHeartsArr[2].classList.add("fa-heart-crack")
-// }
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') {
     player.element.style.backgroundImage = 'url("./SpriteSheets/Samurai/Run.png")'
@@ -38,7 +32,10 @@ document.addEventListener('keydown', (e) => {
   else if (e.key === " " || e.key === "Spacebar") {
     player.element.style.backgroundImage = 'url("./SpriteSheets/Samurai/Attack_1.png")'
     player.animateAttack()
-    killEnemy()
+    if (!enemy.enemyIsDying) {
+      killEnemy()
+    }
+
   }
   
 })
@@ -62,9 +59,11 @@ function killEnemy() {
       enemy.enemyIsDying = true
       setTimeout(() => {
         gameScreen.removeChild(enemy.element)
-        score += 1
+        if(!enemy.isDying) {
+          score++
+        }
         scoreElement.innerText = score
-        enemy = new Onre(gameScreen)
+        enemy = pickRandomEnemy(enemyArray)
       }, 1000)
     }
   }
@@ -74,20 +73,35 @@ function killEnemy() {
       enemy.enemyIsDying = true
       setTimeout(() => {
         gameScreen.removeChild(enemy.element)
-        score += 1
+        if(!enemy.isDying) {
+          score++
+        }
         scoreElement.innerText = score
-        enemy = new Onre(gameScreen)
+        enemy = pickRandomEnemy(enemyArray)
       }, 1000)
     }
   }
-
   
+}
+
+function pickRandomEnemy(enemyArr) {
+  let randomEnemyIndex = Math.floor(Math.random() * enemyArr.length)
+  let randomEnemy = enemyArr[randomEnemyIndex]
+
+  switch(randomEnemy) {
+    case "Yurei":
+      return new Yurei(gameScreen)
+    case "Gotoku":
+      return new Gotoku(gameScreen)
+    case "Onre":
+      return new Onre(gameScreen)
+  }
 }
 
 
 function startGame() {
   player = new Player(gameScreen)
-  enemy = new Yurei(gameScreen)
+  enemy = pickRandomEnemy(enemyArray)
   score = 0
   scoreElement.innerText = score
   playerHeartsArr.forEach(heart => {
@@ -119,15 +133,10 @@ function startGame() {
         playerHeartsArr[player.playerLives - 1].classList.add("fa-heart-crack")
       }
     }
+    
     gameOver();
-    
-    
-
-    // let enemyDistances = [5, -5]
-    // let randomIndex = Math.floor(Math.random() * enemyDistances.length)
-    // let randomDistance = enemyDistances[randomIndex]
-    // console.log(randomDistance)
     enemy.enemyMove()
+
   }, 50)
 
   
