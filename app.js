@@ -319,7 +319,7 @@ function gameOver() {
     
     const resetBtn = document.querySelector('.reset-btn');
     resetBtn.addEventListener('click', () => {
-      gameScreen.removeChild(enemy.element) 
+      gameScreen.contains(enemy.element) && gameScreen.removeChild(enemy.element) 
       startGame();
       player.playerLives = 3
       gameScreen.removeChild(gameOverScreen)
@@ -330,30 +330,31 @@ function gameOver() {
 }
 
 function winGame() {
-  clearInterval(gameLoopInterval);
-  gameAudio.pause()
-  bossAudio.pause()
-  victoryAudio.play()
-  
-  let winGameScreen = document.createElement("div")
-  winGameScreen.innerHTML = `
-    <div id="game-won">
-      <h1 id="">YOU ARE A TRUE SAMURAI</h1>
-      <h2 id="score">Score: ${score}</h2>
-      <button class="reset-btn">PLAY AGAIN</button>
-    </div>
-    `
-  
-  gameScreen.appendChild(winGameScreen)
-  
-  const resetBtn = document.querySelector('.reset-btn'); 
-  resetBtn.addEventListener('click', () => {
-    startGame();
-    player.playerLives = 3
-    gameScreen.removeChild(winGameScreen)
-    gameScreen.style.display = 'block'
-  })
-   
+  if(player.playerLives > 0 ){
+    clearInterval(gameLoopInterval);
+    gameAudio.pause()
+    bossAudio.pause()
+    victoryAudio.play()
+    
+    let winGameScreen = document.createElement("div")
+    winGameScreen.innerHTML = `
+      <div id="game-won">
+        <h1 id="">YOU ARE A TRUE SAMURAI</h1>
+        <h2 id="score">Score: ${score}</h2>
+        <button class="reset-btn">PLAY AGAIN</button>
+      </div>
+      `
+    
+    gameScreen.appendChild(winGameScreen)
+    
+    const resetBtn = document.querySelector('.reset-btn'); 
+    resetBtn.addEventListener('click', () => {
+      startGame();
+      player.playerLives = 3
+      gameScreen.removeChild(winGameScreen)
+      gameScreen.style.display = 'block'
+    })
+  }
 }
 
 

@@ -33,7 +33,7 @@ class Enemy {
     }
 
     enemyMove = () => {
-        if (!this.enemyIsDying) {
+        if (!this.enemyIsDying || this instanceof Boss) {
             if (this.element.style.left === '0px') {
                 this.movingLeft = false
                 this.element.style.rotate = `y 180deg`
