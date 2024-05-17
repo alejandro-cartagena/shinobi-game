@@ -39,7 +39,7 @@ bossAppearsAudio.volume = 0.4
 // let gameOverScreen
 // let winGameScreen
 
-
+let gamePaused = false
 let player
 let enemy
 let enemyArray =  ["Yurei", "Gotoku", "Onre"]
@@ -74,6 +74,9 @@ document.addEventListener('keydown', (e) => {
       killEnemy()
     }
 
+  }
+  else if (e.key === 'Escape') {
+    pauseGame()
   }
   
 })
@@ -233,6 +236,7 @@ function startGame() {
   victoryAudio.currentTime = 0
   gameAudio.play()
 
+  
   // Resets the enemies
   enemies = []
   
@@ -241,10 +245,11 @@ function startGame() {
     enemies.push(pickRandomEnemy(enemyArray))
   }
   enemies.push(new Boss(gameScreen))
-
-
+  
+  
   // Appends Player and Enemy to Screen
   player = new Player(gameScreen)
+  player.playerLives = 3
   enemy = enemies.splice(0, 1)[0]
   gameScreen.appendChild(enemy.element)
 
@@ -254,49 +259,46 @@ function startGame() {
     heart.className = "fa-solid fa-heart heart"
   })
 
+  gameLoop()
+}
+
+function gameLoop() {
   gameLoopInterval = setInterval(() => {
     if (enemy instanceof Boss) {
-      gameAudio.pause()
-      bossAudio.play()
+      gameAudio.pause();
+      bossAudio.play();
     }
 
-    if(player.movingLeft) {
-      if(player.jumping || player.falling) {
-        player.playerMove(-20)
-      }
-      else {
+    if (player.movingLeft) {
+      if (player.jumping || player.falling) {
+        player.playerMove(-20);
+      } else {
         player.playerMove(-10);
       }
-    } else if(player.movingRight) {
-      if(player.jumping || player.falling) {
-        player.playerMove(20)
-      }
-      else {
+    } else if (player.movingRight) {
+      if (player.jumping || player.falling) {
+        player.playerMove(20);
+      } else {
         player.playerMove(10);
       }
-    } else if(!player.attacking) {
-      player.animatePlayer('attack');
+    } else if (!player.attacking) {
+      player.animatePlayer("attack");
     }
     if (player.didCollide(enemy)) {
       if (player.playerLives > 0) {
-        player.pushback(enemy)
-        playerHeartsArr[player.playerLives - 1].classList.remove("fa-heart")
-        playerHeartsArr[player.playerLives - 1].classList.add("fa-heart-crack")
+        player.pushback(enemy);
+        playerHeartsArr[player.playerLives - 1].classList.remove("fa-heart");
+        playerHeartsArr[player.playerLives - 1].classList.add("fa-heart-crack");
       }
     }
-    
+
     gameOver();
-    enemy.enemyMove()
-
-  }, 50)
-
-  
-  setTimeout(() => {
-    
-  }, 3000)
+    enemy.enemyMove();
+  }, 50);
 }
-
 //Update Interval for moving like a game loop
+
+
 function gameOver() {
     
   if(player.playerLives == 0) {
@@ -321,7 +323,6 @@ function gameOver() {
     resetBtn.addEventListener('click', () => {
       gameScreen.contains(enemy.element) && gameScreen.removeChild(enemy.element) 
       startGame();
-      player.playerLives = 3
       gameScreen.removeChild(gameOverScreen)
       gameScreen.style.display = 'block'
     }) 
@@ -349,11 +350,40 @@ function winGame() {
     
     const resetBtn = document.querySelector('.reset-btn'); 
     resetBtn.addEventListener('click', () => {
-      startGame();
-      player.playerLives = 3
+      startGame();      
       gameScreen.removeChild(winGameScreen)
       gameScreen.style.display = 'block'
     })
+  }
+}
+
+//Implementing Game Pause Mechanism
+
+function pauseGame() {
+  if(!gamePaused) {
+    clearInterval(gameLoopInterval)
+    gamePaused = true
+    gamePausedScreen = document.createElement("div")
+    gamePausedScreen.id = "game-pause"
+    gameScreen.appendChild(gamePausedScreen)
+    gamePausedScreen.innerHTML = `
+      <h1>Game Paused</h1>
+      <button id="btn-resume">Resume Game</button>
+      <button id="btn-instructions">Instructions</button>
+      <button id="btn-restart">Restart Game</button>
+    `
+    btnResume = document.querySelector('#btn-resume')
+    btnResume.addEventListener('click', () => {
+      gamePaused = false
+      gameScreen.removeChild(gamePausedScreen)
+      gameLoop()
+    })
+    btnRestart = document.querySelector('#btn-restart')
+    btnRestart.addEventListener('click', () => {
+      startGame()
+      gameScreen.removeChild(gamePausedScreen)
+
+    });
   }
 }
 
