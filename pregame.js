@@ -4,6 +4,8 @@ const startPage = document.getElementById("main");
 const preGameScreen = document.getElementById("pregame-page");
 const gamePage = document.getElementById("game-page-container");
 
+const instructionsBtn = document.getElementById("btn-instructions")
+
 // Audio
 const preGameAudio = document.createElement("audio")
 preGameAudio.src = "./Sounds/sakuya-pre-game.mp3"
@@ -32,7 +34,7 @@ startBtn.addEventListener("click", () => {
         gamePage.style.display = "flex";
         preGameAudio.pause()
         startGame()
-      }, 2000)
+      }, 4000)
     } else {
       letterByLetter.innerHTML += loretext[i]
       i++;
@@ -45,6 +47,12 @@ startBtn.addEventListener("click", () => {
     gamePage.style.display = "flex";
     preGameAudio.pause()
     startGame()
+  })
+  instructionsBtn.addEventListener("click", () => {
+    document.getElementById("instructions").style.display = 'block'
+  })
+  document.getElementById("instructions-close").addEventListener("click", () => {
+    document.getElementById("instructions").style.display = 'none'
   })
 });
 
