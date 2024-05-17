@@ -91,7 +91,7 @@ class Player {
     }
   }
 
-  //PLAYER ATTACK
+  //PLAYER ATTACK ANIMATION
 
   animateAttack() {
     if (!this.attacking) {
@@ -110,7 +110,7 @@ class Player {
     }
   }
 
-  //PLAYER JUMPING & FALLING
+  //PLAYER JUMPING 
 
   jumpPlayer = () => {
     if (!this.jumping) {
@@ -133,6 +133,8 @@ class Player {
       }, 40);
     }
   };
+
+  // FALLING PLAYER IN JUMP MECHANIC
 
   fallPlayer = () => {
     let startFalling = 240;
@@ -160,6 +162,8 @@ class Player {
     }, 40);
   };
 
+  //CHECKING FOR COLLISION
+
   didCollide(enemy) {
     if (!enemy.enemyIsDying) {
       const playerRect = this.element.getBoundingClientRect();
@@ -178,10 +182,13 @@ class Player {
     }
   }
 
-  pushback() {
+  //PUSHBACK MECHANIC
+
+  pushback(enemy) {
     this.takeDamageAudio.play()
     let pushbackInterval = setInterval(() => {
-      this.element.style.rotate === 'y 0deg' ? this.playerMove(-5) : this.playerMove(5)
+      // this.element.style.rotate === 'y 0deg' ? this.playerMove(-5) : this.playerMove(5)
+      enemy.element.style.rotate === 'y 0deg' ? this.playerMove(-5) : this.playerMove(5)
       this.takeDamage()
     }, 50)
     setTimeout(() => {
@@ -191,8 +198,9 @@ class Player {
       clearInterval(pushbackInterval)
       this.isColliding = false
     }, 500)
-    
   }
+
+  //TAKING DAMAGE FADE EFFECT
 
   takeDamage() {
     let currentOpacity = parseFloat(this.element.style.opacity);
@@ -210,7 +218,5 @@ class Player {
       }
     }
   }
-
-  
-
 }
+

@@ -106,6 +106,8 @@ class Boss extends Enemy {
         this.height = 288
         this.width = 288
 
+        // this.element.style.border = 'solid red'
+
         this.element.style.height = `${this.height}px`;
         this.element.style.width = `${this.width}px`;
         this.element.style.backgroundPosition = `${this.height}px ${this.width}px`;

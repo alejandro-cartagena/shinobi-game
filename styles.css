@@ -233,7 +233,7 @@ body {
     font-size: 1.75rem;
   }
 
-  #reset-btn {
+  .reset-btn {
     margin-top: 2em;
     font-size: 1rem;
     padding: 0.5em 1em;
@@ -247,7 +247,7 @@ body {
     letter-spacing: 0.5px;
   }
 
-  #reset-btn:hover {
+  .reset-btn:hover {
     transform: scale(1.1);
     border: 1px solid white;
   }
