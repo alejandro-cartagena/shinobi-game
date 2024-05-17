@@ -178,10 +178,11 @@ class Player {
     }
   }
 
-  pushback() {
+  pushback(enemy) {
     this.takeDamageAudio.play()
     let pushbackInterval = setInterval(() => {
-      this.element.style.rotate === 'y 0deg' ? this.playerMove(-5) : this.playerMove(5)
+      // this.element.style.rotate === 'y 0deg' ? this.playerMove(-5) : this.playerMove(5)
+      enemy.element.style.rotate === 'y 0deg' ? this.playerMove(-5) : this.playerMove(5)
       this.takeDamage()
     }, 50)
     setTimeout(() => {

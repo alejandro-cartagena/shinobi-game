@@ -128,9 +128,7 @@ function killEnemy() {
         killEnemyAudio.play()
         setTimeout(() => {
           gameScreen.removeChild(enemy.element)
-          if(enemy.enemyIsDying) {
-            score++
-          }
+          score++
           scoreElement.innerText = score
       
           if (enemies.length === 1) {
@@ -182,9 +180,7 @@ function killEnemy() {
         killEnemyAudio.play()
         setTimeout(() => {
           gameScreen.removeChild(enemy.element)
-          if(!enemy.enemyIsDying) {
-            score++
-          }
+          score++
           scoreElement.innerText = score
           
           if (enemies.length === 1) {
@@ -231,8 +227,10 @@ function startGame() {
   loseAudio.currentTime = 0
   victoryAudio.pause()
   victoryAudio.currentTime = 0
-
   gameAudio.play()
+
+  // Resets the enemies
+  enemies = []
   
   // Creates 10 random enemies
   for (let i = 0; i < 3; i++) {
@@ -240,8 +238,6 @@ function startGame() {
   }
   enemies.push(new Boss(gameScreen))
 
-
-  // Add the boss
 
   // Appends Player and Enemy to Screen
   player = new Player(gameScreen)
@@ -280,7 +276,7 @@ function startGame() {
     }
     if (player.didCollide(enemy)) {
       if (player.playerLives > 0) {
-        player.pushback()
+        player.pushback(enemy)
         playerHeartsArr[player.playerLives - 1].classList.remove("fa-heart")
         playerHeartsArr[player.playerLives - 1].classList.add("fa-heart-crack")
       }
@@ -341,7 +337,7 @@ function winGame() {
     <div id="game-won">
       <h1 id="">YOU ARE A TRUE SAMURAI</h1>
       <h2 id="score">Score: ${score}</h2>
-      <button id="reset-btn">TRY AGAIN</button>
+      <button id="reset-btn">PLAY AGAIN</button>
     </div>
   `
 
