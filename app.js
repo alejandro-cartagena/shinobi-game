@@ -237,7 +237,7 @@ function startGame() {
   enemies = []
   
   // Creates 10 random enemies
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 10; i++) {
     enemies.push(pickRandomEnemy(enemyArray))
   }
   enemies.push(new Boss(gameScreen))
