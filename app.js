@@ -5,7 +5,7 @@ const scoreElement = document.getElementById('score')
 
 const bossTextElement = document.createElement("h1")
 
-// Sounds
+// SOUNDS
 
 const gameAudio = document.createElement("audio")
 gameAudio.src = "./Sounds/misora-game.mp3"
@@ -34,6 +34,10 @@ const bossAppearsAudio = document.createElement("audio")
 bossAppearsAudio.src = "./Sounds/boss-appears.mp3"
 bossAppearsAudio.volume = 0.4
 
+
+
+// let gameOverScreen
+// let winGameScreen
 
 
 let player
@@ -251,7 +255,6 @@ function startGame() {
   })
 
   gameLoopInterval = setInterval(() => {
-    // Che
     if (enemy instanceof Boss) {
       gameAudio.pause()
       bossAudio.play()
@@ -295,35 +298,35 @@ function startGame() {
 
 //Update Interval for moving like a game loop
 function gameOver() {
+    
   if(player.playerLives == 0) {
     loseAudio.play()
     gameAudio.pause()
     bossAudio.pause()
-
+    
     clearInterval(gameLoopInterval);
-
+    
     let gameOverScreen = document.createElement('div')
     gameOverScreen.innerHTML = `
-    <div id="game-over">
-      <h1 id="">GAME OVER</h1>
-      <h2 id="score">Score: ${score}</h2>
-      <button id="reset-btn">TRY AGAIN</button>
-    </div>
-  `
+      <div id="game-over">
+        <h1 id="">GAME OVER</h1>
+        <h2 id="score">Score: ${score}</h2>
+        <button class="reset-btn">TRY AGAIN</button>
+      </div>
+      `
     // gameScreen.style.display = 'none'
     gameScreen.appendChild(gameOverScreen)
-
-    const resetBtn = document.getElementById('reset-btn'); 
     
+    const resetBtn = document.querySelector('.reset-btn');
     resetBtn.addEventListener('click', () => {
-      gameScreen.removeChild(enemy.element)
+      gameScreen.removeChild(enemy.element) 
       startGame();
       player.playerLives = 3
       gameScreen.removeChild(gameOverScreen)
       gameScreen.style.display = 'block'
-      
-    })
+    }) 
   }
+
 }
 
 function winGame() {
@@ -331,26 +334,26 @@ function winGame() {
   gameAudio.pause()
   bossAudio.pause()
   victoryAudio.play()
-
+  
   let winGameScreen = document.createElement("div")
   winGameScreen.innerHTML = `
     <div id="game-won">
       <h1 id="">YOU ARE A TRUE SAMURAI</h1>
       <h2 id="score">Score: ${score}</h2>
-      <button id="reset-btn">PLAY AGAIN</button>
+      <button class="reset-btn">PLAY AGAIN</button>
     </div>
-  `
-
-  gamePage.appendChild(winGameScreen)
-
-    const resetBtn = document.getElementById('reset-btn'); 
-    
-    resetBtn.addEventListener('click', () => {
-      startGame();
-      player.playerLives = 3
-      gamePage.removeChild(winGameScreen)
-      gameScreen.style.display = 'block'
-    })
+    `
+  
+  gameScreen.appendChild(winGameScreen)
+  
+  const resetBtn = document.querySelector('.reset-btn'); 
+  resetBtn.addEventListener('click', () => {
+    startGame();
+    player.playerLives = 3
+    gameScreen.removeChild(winGameScreen)
+    gameScreen.style.display = 'block'
+  })
+   
 }
 
 
