@@ -2,8 +2,9 @@ const gamePageContainer = document.getElementById('game-page-container')
 const gameScreen = document.getElementById("game-page")
 const gameOverText = document.getElementById('');
 const scoreElement = document.getElementById('score')
-
 const bossTextElement = document.createElement("h1")
+
+const screenResizePage = document.getElementById("mobile-page")
 
 // SOUNDS
 
@@ -35,9 +36,11 @@ bossAppearsAudio.src = "./Sounds/boss-appears.mp3"
 bossAppearsAudio.volume = 0.4
 
 
-
-// let gameOverScreen
-// let winGameScreen
+// Will Keep Track on Window Size
+let windowSizeGamePage = window.innerWidth
+window.addEventListener("resize", () => {
+  windowSizeGamePage = window.innerWidth
+})
 
 
 let player
@@ -47,6 +50,8 @@ let enemies = []
 let score = 0
 
 let gameLoopInterval;
+
+
 
 // Player Lives
 let playerHeartsArr = [...document.querySelectorAll(".heart")]
@@ -356,6 +361,16 @@ function winGame() {
     })
   }
 }
+
+
+function pauseBackgroundAudio() {
+  gameAudio.pause()
+  loseAudio.pause()
+  bossAudio.pause()
+  loseAudio.pause()
+}
+
+
 
 
 

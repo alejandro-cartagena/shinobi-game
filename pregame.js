@@ -9,6 +9,9 @@ const instructionsBtn = document.getElementById("btn-instructions")
 
 // Size of the window (screen)
 let windowSize = window.innerWidth
+window.addEventListener("resize", () => {
+  windowSize = window.innerWidth
+})
 
 // Audio
 const preGameAudio = document.createElement("audio")
@@ -17,12 +20,6 @@ preGameAudio.volume = 0.2
 
 startBtn.addEventListener("click", () => {
   startPage.style.display = "none";
-
-  // setTimeout(() => {
-  //   preGameScreen.style.display = "none";
-  //   gamePage.style.display = "flex";
-  // }, 10000);
-
   preGameScreen.style.display = "flex";
   preGameAudio.play()
   
@@ -45,9 +42,7 @@ startBtn.addEventListener("click", () => {
     }
   }, 50)
 
-  window.addEventListener("resize", () => {
-    windowSize = window.innerWidth
-  })
+  
 
   document.getElementById("btn-skip").addEventListener("click", () => {
     clearInterval(letterInterval)
