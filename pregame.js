@@ -34,7 +34,7 @@ startBtn.addEventListener("click", () => {
         preGameScreen.style.display = "none";
         gamePage.style.display = "flex";
         preGameAudio.pause()
-        startGame()
+        screenSizeCheck()
       }, 4000)
     } else {
       letterByLetter.innerHTML += loretext[i]
@@ -49,14 +49,7 @@ startBtn.addEventListener("click", () => {
     letterByLetter.innerText = loretext
     preGameScreen.style.display = "none";
     preGameAudio.pause()
-    if (windowSize >= 800) {
-      gamePage.style.display = "flex";
-      startGame()
-    }
-    else {
-      mobilePage.style.display = "flex"
-    }
-    
+    screenSizeCheck()
   })
 
   instructionsBtn.addEventListener("click", () => {
@@ -69,6 +62,16 @@ startBtn.addEventListener("click", () => {
 
   
 });
+
+function screenSizeCheck() {
+  if (windowSize >= 800) {
+    gamePage.style.display = "flex";
+    startGame()
+  }
+  else {
+    mobilePage.style.display = "flex"
+  }
+}
 
 
 
