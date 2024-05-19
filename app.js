@@ -94,123 +94,92 @@ document.addEventListener('keyup', (e) => {
 
 
 function spawnBoss() {
-  
   bossTextElement.classList.add("boss-text")
   bossTextElement.innerText = "BOSS FIGHT!"
   gameScreen.appendChild(bossTextElement)
-
   bossAppearsAudio.play()
 }
 
-
+// Kill enemies Mechanics
 function killEnemy() {
   const playerRect = player.element.getBoundingClientRect();
   const enemyRect = enemy.element.getBoundingClientRect();
-  
-  if (player.element.style.rotate === 'y 0deg') {
-    if ((playerRect.right - playerRect.width / 2 > enemyRect.left) && (enemyRect.left > playerRect.left)) {
-      enemy.element.style.backgroundImage = enemy.dyingUrl
-      enemy.enemyIsDying = true
-      // Checks if the enemy is the Boss
-      if(enemy instanceof Boss) {
-        // This is the Hurt condition for the Boss
-        if (enemy.bossLives > 0) {
-          enemy.element.style.backgroundImage = enemy.hurtUrl
-          setTimeout(() => {
-            enemy.enemyIsDying = false
-            enemy.element.style.backgroundImage = `url("./SpriteSheets/Kitsune/Run.png")`
-          }, 1000)
-          enemy.bossLives--
-        }
-        else {
-          // This is the die condition for the Boss
-          // Also the WIN condition
-          enemy.enemyIsDying = true
-          enemy.element.style.backgroundImage = enemy.dyingUrl
-          setTimeout(() => {
-            gameScreen.removeChild(enemy.element)
-            winGame()
-          }, 1000)
-        }
-      }
-      else {
-        killEnemyAudio.play()
-        setTimeout(() => {
-          gameScreen.removeChild(enemy.element)
-          score++
-          scoreElement.innerText = score
-      
-          if (enemies.length === 1) {
-            spawnBoss()
-            setTimeout(() => {
-              enemy = enemies.splice(0, 1)[0]
-              gameScreen.removeChild(bossTextElement)
-              gameScreen.appendChild(enemy.element)
-            }, 2000)
-            
-          }
-          else {
-            enemy = enemies.splice(0, 1)[0]
-            gameScreen.appendChild(enemy.element)
-          }
-          
-        }, 1000)
-      }
-      
-    }
+  const isFacingRight = player.element.style.rotate === 'y 0deg';
+  const isFacingLeft = player.element.style.rotate === 'y 180deg';
+  const halfPlayerWidth = playerRect.width / 2;
+
+  const isHitRight = isFacingRight && playerRect.right - halfPlayerWidth > enemyRect.left && enemyRect.left > playerRect.left;
+  const isHitLeft = isFacingLeft && playerRect.left + halfPlayerWidth < enemyRect.right && enemyRect.right < playerRect.right;
+
+  if (isHitRight || isHitLeft) {
+    handleEnemyHit();
   }
-  else if (player.element.style.rotate === 'y 180deg') {
-    if ((playerRect.left + playerRect.width / 2 < enemyRect.right) && (enemyRect.right < playerRect.right)) {
-      enemy.element.style.backgroundImage = enemy.dyingUrl
-      enemy.enemyIsDying = true
-      // Checks if the enemy is the Boss
-      if(enemy instanceof Boss) {
-        // This is the Hurt condition for the Boss
-        if (enemy.bossLives > 0) {
-          enemy.element.style.backgroundImage = enemy.hurtUrl
-          setTimeout(() => {
-            enemy.enemyIsDying = false
-            enemy.element.style.backgroundImage = `url("./SpriteSheets/Kitsune/Run.png")`
-          }, 1000)
-          enemy.bossLives--
-        }
-        else {
-          // This is the die condition for the Boss
-          // Also the WIN condition
-          enemy.enemyIsDying = true
-          enemy.element.style.backgroundImage = enemy.dyingUrl
-          setTimeout(() => {
-            gameScreen.removeChild(enemy.element)
-            winGame()
-          }, 1000)
-        }
-      }
-      else {
-        killEnemyAudio.play()
-        setTimeout(() => {
-          gameScreen.removeChild(enemy.element)
-          score++
-          scoreElement.innerText = score
-          
-          if (enemies.length === 1) {
-            spawnBoss()
-            setTimeout(() => {
-              enemy = enemies.splice(0, 1)[0]
-              gameScreen.removeChild(bossTextElement)
-              gameScreen.appendChild(enemy.element)
-            }, 2000)
-          }
-          else {
-            enemy = enemies.splice(0, 1)[0]
-            gameScreen.appendChild(enemy.element)
-          }
-          
-        }, 1000)
-      }
-    }
-  }
-  
 }
+
+function handleEnemyHit() {
+  enemy.element.style.backgroundImage = enemy.dyingUrl;
+  enemy.enemyIsDying = true;
+
+  if (enemy instanceof Boss) {
+    handleBossHit();
+  } else {
+    handleRegularEnemyHit();
+  }
+}
+
+function handleBossHit() {
+  if (enemy.bossLives > 0) {
+    killEnemyAudio.play();
+    enemy.element.style.backgroundImage = enemy.hurtUrl;
+    setTimeout(() => {
+      enemy.enemyIsDying = false;
+      enemy.element.style.backgroundImage = `url("./SpriteSheets/Kitsune/Run.png")`;
+    }, 1000);
+    enemy.bossLives--;
+  } else {
+    handleBossDefeat();
+  }
+}
+
+function handleBossDefeat() {
+  enemy.enemyIsDying = true;
+  enemy.element.style.backgroundImage = enemy.dyingUrl;
+  setTimeout(() => {
+    gameScreen.removeChild(enemy.element);
+    winGame();
+  }, 1000);
+}
+
+function handleRegularEnemyHit() {
+  killEnemyAudio.play();
+  setTimeout(() => {
+    gameScreen.removeChild(enemy.element);
+    score++;
+    scoreElement.innerText = score;
+
+    if (enemies.length === 1) {
+      spawnBossWithDelay();
+    } else {
+      replaceEnemy();
+    }
+  }, 1000);
+}
+
+function spawnBossWithDelay() {
+  spawnBoss();
+  setTimeout(() => {
+    enemy = enemies.splice(0, 1)[0];
+    gameScreen.removeChild(bossTextElement);
+    gameScreen.appendChild(enemy.element);
+  }, 2000);
+}
+
+function replaceEnemy() {
+  enemy = enemies.splice(0, 1)[0];
+  gameScreen.appendChild(enemy.element);
+}
+
+//End of Kill Enemy mechanics
 
 function pickRandomEnemy(enemyArr) {
   let randomEnemyIndex = Math.floor(Math.random() * enemyArr.length)
