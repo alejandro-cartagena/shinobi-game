@@ -87,6 +87,15 @@ body {
     border-radius: 5px;
     position: relative;
   }
+
+  @media (max-width: 400px) {
+    #lore-content {
+      width: 75%;
+      max-width: 380px;
+      height: 500px;
+    }
+  }
+
   #lore-content h1{
     text-align: center;
     position: relative;
@@ -147,9 +156,18 @@ body {
     right: 0;
     bottom: 0;
     margin: auto;
-    width: 600px;
+    width: 90%;
+    max-width: 600px;
     height: 450px;
     border-radius: 6px;
+  }
+
+  @media (max-width: 610px) {
+    #instructions {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
   }
 
  #instructions-close-container {
@@ -315,4 +333,38 @@ body {
     50% {
       opacity: 0;
     }
+  }
+
+
+  /* Styles for the Mobile only Page */
+
+  #mobile-page {
+    text-align: center;
+    padding: 0 2em;
+    color: #F8F8F8;
+    display: none;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url("./assets/sad-samurai.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-shadow: 2px 2px 4px #000;
+  }
+
+  #mobile-page .mobile-page-text-container {
+    width: 100%;
+    max-width: 600px;
+  }
+
+  #mobile-page h1 {
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  #mobile-page .samurai-message-text {
+    font-size: 1rem;
+    letter-spacing: 1px;
   }
