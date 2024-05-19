@@ -32,7 +32,6 @@ startBtn.addEventListener("click", () => {
       clearInterval(letterInterval);
       setTimeout(() => {
         preGameScreen.style.display = "none";
-        gamePage.style.display = "flex";
         preGameAudio.pause()
         screenSizeCheck()
       }, 4000)
