@@ -334,3 +334,37 @@ body {
       opacity: 0;
     }
   }
+
+
+  /* Styles for the Mobile only Page */
+
+  #mobile-page {
+    text-align: center;
+    padding: 0 2em;
+    color: #F8F8F8;
+    display: none;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url("./assets/sad-samurai.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-shadow: 2px 2px 4px #000;
+  }
+
+  #mobile-page .mobile-page-text-container {
+    width: 100%;
+    max-width: 600px;
+  }
+
+  #mobile-page h1 {
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  #mobile-page .samurai-message-text {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
