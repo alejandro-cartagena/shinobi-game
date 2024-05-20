@@ -4,7 +4,6 @@ const gameOverText = document.getElementById('');
 const scoreElement = document.getElementById('score')
 const bossTextElement = document.createElement("h1")
 
-const screenResizePage = document.getElementById("mobile-page")
 
 // SOUNDS
 
@@ -37,6 +36,10 @@ bossAppearsAudio.volume = 0.4
 
 
 // Will Keep Track on Window Size
+
+let resizeInterval
+
+const screenResizePage = document.getElementById("mobile-page")
 let windowSizeGamePage = window.innerWidth
 window.addEventListener("resize", () => {
   windowSizeGamePage = window.innerWidth
@@ -205,7 +208,7 @@ function startGame() {
   loseAudio.currentTime = 0
   victoryAudio.pause()
   victoryAudio.currentTime = 0
-  gameAudio.play()
+  
 
   // Resets the enemies
   enemies = []
@@ -228,7 +231,12 @@ function startGame() {
     heart.className = "fa-solid fa-heart heart"
   })
 
+  
   gameLoopInterval = setInterval(() => {
+
+    // Checks if the screen size goes below 800px
+    screenSizeCheckGame(gameAudio)
+
     if (enemy instanceof Boss) {
       gameAudio.pause()
       bossAudio.play()
@@ -274,9 +282,11 @@ function startGame() {
 function gameOver() {
     
   if(player.playerLives == 0) {
-    loseAudio.play()
+    // loseAudio.play()
     gameAudio.pause()
     bossAudio.pause()
+
+    screenSizeCheckWinLose(loseAudio)
     
     clearInterval(gameLoopInterval);
     
@@ -293,6 +303,7 @@ function gameOver() {
     
     const resetBtn = document.querySelector('.reset-btn');
     resetBtn.addEventListener('click', () => {
+      clearInterval(resizeInterval)
       gameScreen.contains(enemy.element) && gameScreen.removeChild(enemy.element) 
       startGame();
       player.playerLives = 3
@@ -308,7 +319,8 @@ function winGame() {
     clearInterval(gameLoopInterval);
     gameAudio.pause()
     bossAudio.pause()
-    victoryAudio.play()
+    // victoryAudio.play()
+    screenSizeCheckWinLose(victoryAudio)
     
     let winGameScreen = document.createElement("div")
     winGameScreen.innerHTML = `
@@ -323,6 +335,7 @@ function winGame() {
     
     const resetBtn = document.querySelector('.reset-btn'); 
     resetBtn.addEventListener('click', () => {
+      clearInterval(resizeInterval)
       startGame();
       player.playerLives = 3
       gameScreen.removeChild(winGameScreen)
@@ -331,6 +344,37 @@ function winGame() {
   }
 }
 
+
+// Checks for screen size change when the game is running
+function screenSizeCheckGame(audio) {
+  if (windowSizeGamePage < 800) {
+    audio.pause()
+    gamePageContainer.style.display = 'none'
+    screenResizePage.style.display = 'flex'
+  }
+  else {
+    gamePageContainer.style.display = 'flex'
+    screenResizePage.style.display = 'none'
+    audio.play()
+  }
+}
+
+
+// Checks for screen size change when the game won or lost
+function screenSizeCheckWinLose(audio) {
+  resizeInterval = setInterval(() => {
+    if (windowSizeGamePage < 800) {
+      audio.pause()
+      gamePageContainer.style.display = 'none'
+      screenResizePage.style.display = 'flex'
+    }
+    else {
+      gamePageContainer.style.display = 'flex'
+      screenResizePage.style.display = 'none'
+      audio.play()
+    }
+  },50)
+}
 
 function pauseBackgroundAudio() {
   gameAudio.pause()
